@@ -5,12 +5,12 @@ const Calculator = () => {
   const [displayValue, setDisplayValue] = useState("0");
   const [storedValue, setStoredValue] = useState(null);
   const [operator, setOperator] = useState(null);
-  const [resultColor, setResultColor] = useState(false);
+  const [isResult, setIsResult] = useState(false); // Новый стейт для отслеживания результата
 
   const buttons = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"];
 
   const handleButtonClick = (value) => {
-    setResultColor(false);
+    setIsResult(false); // Сбрасываем флаг результата
     if (displayValue === "0") {
       setDisplayValue(value);
     } else {
@@ -39,7 +39,7 @@ const Calculator = () => {
       setDisplayValue(result.toString());
       setStoredValue(null);
       setOperator(null);
-      setResultColor(true); // Меняем цвет результата
+      setIsResult(true); // Устанавливаем флаг результата, чтобы сделать текст красным
     }
   };
 
@@ -47,12 +47,13 @@ const Calculator = () => {
     setDisplayValue("0");
     setStoredValue(null);
     setOperator(null);
-    setResultColor(false);
+    setIsResult(false); // Сбрасываем флаг результата
   };
 
   return (
     <div className={styles.calculator}>
-      <div className={styles.display} style={{ color: resultColor ? "red" : "black" }}>
+      {/* Динамически изменяем класс в зависимости от того, является ли это результатом */}
+      <div className={`${styles.display} ${isResult ? styles.result : ''}`}>
         {displayValue}
       </div>
       <div className={styles.buttons}>
@@ -61,10 +62,10 @@ const Calculator = () => {
             {button}
           </button>
         ))}
-        <button onClick={() => handleOperatorClick("+")}>+</button>
-        <button onClick={() => handleOperatorClick("-")}>-</button>
-        <button onClick={handleEqualClick}>=</button>
-        <button onClick={handleClearClick}>C</button>
+        <button className={styles.operator} onClick={() => handleOperatorClick("+")}>+</button>
+        <button className={styles.operator} onClick={() => handleOperatorClick("-")}>-</button>
+        <button className={styles.equal} onClick={handleEqualClick}>=</button>
+        <button className={styles.clear} onClick={handleClearClick}>C</button>
       </div>
     </div>
   );
